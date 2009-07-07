@@ -38,12 +38,12 @@
 		constrain_menus : true,
 		
 		theme : "advanced",
-		plugins : "safari,pagebreak,style,layer,advhr,advimage,advlink,emotions,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,visualchars,xhtmlxtras,template",
+		plugins : "tinycimm,safari,pagebreak,style,layer,advhr,advimage,advlink,emotions,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,fullscreen,noneditable,visualchars,xhtmlxtras,template",
 
 		// Theme options
 		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,blockquote,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,styleselect,formatselect,fontselect,fontsizeselect",
 		theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,undo,redo,|,search,replace,|,bullist,numlist,|,outdent,indent,|,insertdate,inserttime,|,forecolor,backcolor,|,print,preview,fullscreen,code",
-		theme_advanced_buttons3 : "image,anchor,link,unlink,|,charmap,emotions,media,advhr,",
+		theme_advanced_buttons3 : "image,tinycimm-image,anchor,link,unlink,|,charmap,emotions,media,advhr,",
 		theme_advanced_toolbar_location : "top",
 		theme_advanced_toolbar_align : "left",
 		theme_advanced_resizing : true,
@@ -51,6 +51,16 @@
 		document_base_url: "<?= BASE_URI ;?>",
 		
 		media_strict: false,
+
+		// required TinyCIMM settings
+		file_browser_callback : 'tinycimm',
+		tinycimm_controller : '<?=$this->config->item('tinycimm_controller');?>',
+		tinycimm_assets_path : '/application/uploads/tinycimm/',
+		tinycimm_resize_default_intial_width : '<?=$this->config->item('default_initial_width', 'tinycimm_image_resize_config');?>',
+		tinycimm_thumb_width : '<?=$this->config->item('tinycimm_image_thumbnail_default_width');?>',
+		tinycimm_thumb_height : '<?=$this->config->item('tinycimm_image_thumbnail_default_height');?>',
+		tinycimm_thumb_lightbox_class : '<?=$this->config->item('tinycimm_image_thumbnail_default_lightbox_class');?>',
+		tinycimm_thumb_lightbox_gallery : '<?=$this->config->item('tinycimm_image_thumbnail_default_lightbox_gallery');?>',
 
 		// Default ruleset
 		valid_elements : "@[id|class|style|title|dir<ltr?rtl|lang|xml::lang|onclick|ondblclick|"
@@ -79,6 +89,27 @@
 			+',embed[width|height|name|flashvars|src|bgcolor|align|play|loop|quality|allowscriptaccess|type|pluginspage]'
 
     });
+
+	// TinyCIMM file browser callback function
+	function tinycimm(field_name, url, type, win) {
+
+		var url = win.tinyMCE.baseURI.relative+'/plugins/tinycimm/'+type+'.htm';
+
+		tinyMCE.activeEditor.windowManager.open({
+			file : url,
+			width : 574,
+			height : 462,
+			resizable : "yes",
+			inline : "yes",  
+			close_previous : "no"
+		}, {
+			window : win,
+			tinyMCEPopup : win.tinyMCEPopup,
+			input : field_name
+		});
+		return false;
+	}
+
     
 	// Example content CSS (should be your site CSS)
 	//content_css : "css/content.css",
