@@ -4,13 +4,15 @@ UPGRADE
 Remember to always run these steps in order. They are ordered intentionally to either
 minimise or totally remove downtime during upgrade.
 
-25/06/09 - v0.9.5.4 to current
-------------------------------
+06/07/09 - v0.9.5.4 to v0.9.6-beta
+----------------------------------
 
 1. Run the following MySQL.
 
 	ALTER TABLE comments
 		ADD is_active TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER module_id;
+	
+	UPDATE comments SET is_active = 1;
 
 	INSERT INTO settings VALUES('enable_social_bookmarks','Enable Social Bookmarking',
 		'Show links below news, photos, etc with links to social bookmarking and media sites where the content can be shared.',
@@ -21,6 +23,11 @@ minimise or totally remove downtime during upgrade.
 
 	ALTER TABLE
 		MODIFY `gallery_slug` varchar(255) collate utf8_unicode_ci NOT NULL default '';
+		
+	INSERT INTO `settings` VALUES(
+		'twitter_cache', 'Cache time', 'How many minutes should your Tweets be stored before being fetched again?',
+		'text','5','','','0','1','twitter'
+	);
 
 2. Replace old files with new files.
 
